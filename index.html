@@ -729,14 +729,14 @@
 
         // Get score bar HTML
         function getScoreBar(score) {
-            const percentage = Math.min(score * 100, 100);
+            const percentage = Math.min(score, 100);
             const hue = 120 * (score); // Green for high, red for low
             return `
                 <div class="score-container">
                     <div class="score-bar-bg">
                         <div class="score-bar-fill" style="width: ${percentage}%; background: linear-gradient(90deg, hsl(${hue}, 70%, 50%), hsl(${hue}, 80%, 60%));"></div>
                     </div>
-                    <span class="score-value">${(score * 100).toFixed(1)}%</span>
+                    <span class="score-value">${score.toFixed(1)}%</span>
                 </div>
             `;
         }
@@ -797,12 +797,12 @@
                 type: 'bar',
                 orientation: 'h',
                 y: data.map(r => r['Model']).reverse(),
-                x: data.map(r => r.categoryScore * 100).reverse(),
+                x: data.map(r => r.categoryScore).reverse(),
                 marker: {
                     color: colors.reverse(),
                     cornerradius: 4
                 },
-                text: data.map(r => (r.categoryScore * 100).toFixed(1) + '%').reverse(),
+                text: data.map(r => r.categoryScore.toFixed(1) + '%').reverse(),
                 textposition: 'outside',
                 textfont: {
                     color: isDark ? '#ffffff' : '#1F2937',
