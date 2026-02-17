@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ST-WebAgentBench Leaderboard</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0B0B19;
+            --bg-secondary: rgba(19, 19, 37, 0.4);
+            --bg-hover: rgba(30, 30, 45, 0.95);
+            --text-primary: #ffffff;
+            --text-secondary: #e2e8f0;
+            --text-tertiary: #94A3B8;
+            --border-color: rgba(31, 41, 55, 0.5);
+            --border-hover: rgba(79, 70, 229, 0.4);
+            --card-bg: rgba(17, 17, 27, 0.4);
+            --accent-color: #ffffff;
+            --accent-bg: rgba(79, 70, 229, 0.1);
+            --blue-gradient: linear-gradient(45deg, #60A5FA, #3B82F6);
+            --green-gradient: linear-gradient(45deg, #34D399, #10B981);
+            --purple-gradient: linear-gradient(45deg, #A78BFA, #8B5CF6);
+            --pink-gradient: linear-gradient(45deg, #F472B6, #EC4899);
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --private-color: #8B5CF6;
+            --opensource-color: #10B981;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg-primary: #ffffff;
+                --bg-secondary: rgba(243, 244, 246, 0.8);
+                --bg-hover: rgba(229, 231, 235, 0.95);
+                --text-primary: #1F2937;
+                --text-secondary: #4B5563;
+                --text-tertiary: #6B7280;
+                --border-color: rgba(209, 213, 219, 0.5);
+                --border-hover: rgba(79, 70, 229, 0.4);
+                --card-bg: rgba(249, 250, 251, 0.8);
+                --accent-color: #4F46E5;
+                --accent-bg: rgba(79, 70, 229, 0.1);
+                --blue-gradient: linear-gradient(45deg, #3B82F6, #2563EB);
+                --green-gradient: linear-gradient(45deg, #34D399, #10B981);
+                --purple-gradient: linear-gradient(45deg, #8B5CF6, #7C3AED);
+                --pink-gradient: linear-gradient(45deg, #EC4899, #DB2777);
+                --shadow-color: rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Styles */
+        .header-wrapper {
+            background: var(--bg-primary);
+            padding: 4rem 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .header-content {
+            max-width: 72rem;
+            margin: 0 auto;
+        }
+
+        .title-section {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .title-gradient {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            background: var(--purple-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+        }
+
+        .description {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            line-height: 1.75;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .highlight-question {
+            background: var(--blue-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            margin-top: 1rem;
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 1024px) {
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .metric-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-hover);
+            box-shadow: 0 4px 20px var(--shadow-color);
+        }
+
+        .metric-number {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .metric-blue {
+            background: var(--blue-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .metric-green {
+            background: var(--green-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .metric-purple {
+            background: var(--purple-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .metric-pink {
+            background: var(--pink-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .metric-detail {
+            font-size: 1rem;
+            line-height: 1.75;
+            color: var(--text-tertiary);
+        }
+
+        .metric-detail.primary {
+            color: var(--accent-color);
+        }
+
+        /* Actions */
+        .actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 100px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-color);
+            background: var(--accent-bg);
+        }
+
+        .action-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Filters */
+        .filters-section {
+            display: flex;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:hover,
+        .filter-select:focus {
+            border-color: var(--border-hover);
+            outline: none;
+        }
+
+        /* Table Styles */
+        .table-container {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 2rem 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .styled-table thead {
+            position: sticky;
+            top: 0;
+            background: var(--bg-hover);
+            z-index: 1;
+        }
+
+        .styled-table th {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .styled-table td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .styled-table tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        .styled-table tbody tr:hover {
+            background: var(--bg-hover);
+        }
+
+        /* Rank Badge */
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .rank-1 {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+        }
+
+        .rank-2 {
+            background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+            color: #000;
+        }
+
+        .rank-3 {
+            background: linear-gradient(135deg, #CD7F32, #B87333);
+            color: #fff;
+        }
+
+        .rank-default {
+            background: var(--bg-hover);
+            color: var(--text-secondary);
+        }
+
+        /* Type Badge */
+        .type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .type-private {
+            background: rgba(139, 92, 246, 0.2);
+            color: #A78BFA;
+        }
+
+        .type-opensource {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34D399;
+        }
+
+        /* Score Bar */
+        .score-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .score-bar-bg {
+            flex: 1;
+            height: 8px;
+            background: var(--bg-hover);
+            border-radius: 4px;
+            overflow: hidden;
+            min-width: 100px;
+        }
+
+        .score-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .score-value {
+            font-weight: 600;
+            min-width: 60px;
+            text-align: right;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            color: var(--text-secondary);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer/Methodology */
+        .section-divider {
+            margin: 3rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .bibtex-citation {
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .acknowledgment-text {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header-wrapper">
+            <div class="header-content">
+                <div class="title-section">
+                    <div class="title-gradient">ST-WebAgentBench Leaderboard</div>
+                    <div class="description">
+                        Web agents are evolving rapidly, but enterprise deployment demands more than task completion—it requires safety and trust.<br>
+                        This benchmark evaluates agents on real enterprise tasks, measuring both success and policy adherence.
+                        <span class="highlight-question">
+                            "Can web agents complete enterprise tasks without violating policies?"
+                        </span>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <a href="https://sites.google.com/view/st-webagentbench/home" class="action-button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"/>
+                            <line x1="8" y1="12" x2="16" y2="12"/>
+                        </svg>
+                        Home
+                    </a>
+                    <a href="https://github.com/segev-shlomov/ST-WebAgentBench" class="action-button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                        </svg>
+                        GitHub
+                    </a>
+                    <a href="https://huggingface.co/datasets/dolev31/st-webagentbench" class="action-button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Dataset
+                    </a>
+                    <a href="https://arxiv.org/pdf/2410.06703" class="action-button" target="_blank">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                        </svg>
+                        Paper
+                    </a>
+                    <a href="mailto:benwiesel@ibm.com?subject=Get%20Model%20Added%20to%20Leaderboard&body=Hi%20there%2C%0A%0AI%20would%20like%20to%20add%20my%20model%20to%20the%20Agent%20Leaderboard.%0A%0AModel%20Name%3A%0AModel%20URL%3A%0A%0ABest%20regards" class="action-button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"/>
+                            <line x1="12" y1="8" x2="12" y2="16"/>
+                            <line x1="8" y1="12" x2="16" y2="12"/>
+                        </svg>
+                        Add Your Model
+                    </a>
+                </div>
+
+                <!-- Metrics Cards (populated by JS) -->
+                <div class="metrics-grid" id="metrics-grid"></div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-section">
+            <div class="filter-group">
+                <label class="filter-label" for="model-type">Model Type</label>
+                <select class="filter-select" id="model-type">
+                    <option value="All">All</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label" for="category">Category</label>
+                <select class="filter-select" id="category">
+                    <option value="Overall (CuP)">Overall (CuP)</option>
+                    <option value="Overall (Avg. All Metrics)">Overall (Avg. All Metrics)</option>
+                    <option value="Completion Rate">Completion Rate</option>
+                    <option value="Partial Completion Rate">Partial Completion Rate</option>
+                    <option value="CuP">CuP</option>
+                    <option value="Partial CuP">Partial CuP</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <div id="loading" class="loading">
+                <div class="loading-spinner"></div>
+                Loading leaderboard data...
+            </div>
+            <table class="styled-table" id="leaderboard-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Model</th>
+                        <th>Type</th>
+                        <th>Vendor</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body"></tbody>
+            </table>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-container">
+            <div id="performance-chart"></div>
+        </div>
+
+        <!-- Methodology/Footer -->
+        <div class="section-divider"></div>
+        <h2 class="section-title">Citation</h2>
+        <pre class="bibtex-citation">@misc{st-webagentbench-leaderboard,
+    author = {Ben Wiesel},
+    title = {ST-WebAgentBench},
+    year = {2025},
+    howpublished = {\url{https://huggingface.co/spaces/benwiesel/ST-WebAgentBench}}
+}</pre>
+
+        <div class="section-divider"></div>
+        <h2 class="section-title">Acknowledgments</h2>
+        <p class="acknowledgment-text">Leaderboard template adapted from Galileo AI's Agent Leaderboard.</p>
+        <pre class="bibtex-citation">@misc{agent-leaderboard,
+    author = {Pratik Bhavsar},
+    title = {Agent Leaderboard},
+    year = {2025},
+    publisher = {Galileo.ai},
+    howpublished = {\url{https://huggingface.co/spaces/galileo-ai/agent-leaderboard}}
+}</pre>
+    </div>
+
+    <script>
+        // Configuration
+        const SHEET_ID = "18rg0S2J01iIBXx50X8qNRLBiOS_K7MTmcbVVio25_Fc";
+        const GID = "0";
+        const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+
+        const CATEGORIES = {
+            "Overall (CuP)": ["CuP"],
+            "Overall (Avg. All Metrics)": ["Completion Rate", "CuP", "Partial Completion Rate", "Partial CuP"],
+            "Completion Rate": ["Completion Rate"],
+            "Partial Completion Rate": ["Partial Completion Rate"],
+            "CuP": ["CuP"],
+            "Partial CuP": ["Partial CuP"],
+        };
+
+        let rawData = [];
+        let headers = [];
+
+        // Parse CSV
+        function parseCSV(csv) {
+            const lines = csv.split('\n');
+            const result = [];
+            headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+            
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i].trim()) continue;
+                
+                const values = [];
+                let current = '';
+                let inQuotes = false;
+                
+                for (let char of lines[i]) {
+                    if (char === '"') {
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        values.push(current.trim());
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+                values.push(current.trim());
+                
+                const row = {};
+                headers.forEach((header, index) => {
+                    let value = values[index] || '';
+                    value = value.replace(/^"|"$/g, '');
+                    // Try to parse as number
+                    const num = parseFloat(value);
+                    row[header] = isNaN(num) ? value : num;
+                });
+                result.push(row);
+            }
+            return result;
+        }
+
+        // Fetch data
+        async function fetchData() {
+            try {
+                const response = await fetch(CSV_URL);
+                const csv = await response.text();
+                rawData = parseCSV(csv);
+                
+                // Populate model type filter
+                const modelTypes = [...new Set(rawData.map(r => r['Model Type']))].filter(Boolean);
+                const modelTypeSelect = document.getElementById('model-type');
+                modelTypes.forEach(type => {
+                    const option = document.createElement('option');
+                    option.value = type;
+                    option.textContent = type;
+                    modelTypeSelect.appendChild(option);
+                });
+
+                updateMetricsCards();
+                updateLeaderboard();
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('loading').textContent = 'Error loading data. Please refresh.';
+            }
+        }
+
+        // Update metrics cards
+        function updateMetricsCards() {
+            const totalModels = rawData.length;
+            const typeCounts = {};
+            rawData.forEach(row => {
+                const type = row['Model Type'] || 'Unknown';
+                typeCounts[type] = (typeCounts[type] || 0) + 1;
+            });
+            const privateCount = typeCounts['Private'] || 0;
+            const openSourceCount = typeCounts['Open source'] || 0;
+            const totalVendors = new Set(rawData.map(r => r['Vendor'])).size;
+
+            document.getElementById('metrics-grid').innerHTML = `
+                <div class="metric-card">
+                    <div class="metric-number metric-blue">${totalModels}</div>
+                    <div class="metric-label">Total Models</div>
+                    <div class="metric-detail primary">${privateCount} Private</div>
+                    <div class="metric-detail primary">${openSourceCount} Open Source</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number metric-purple">3</div>
+                    <div class="metric-label">Domains</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number metric-green">6</div>
+                    <div class="metric-label">Safety Dimensions</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number metric-pink">CuP</div>
+                    <div class="metric-label">Primary Metric</div>
+                    <div class="metric-detail primary">Completion under Policy</div>
+                    <div class="metric-detail primary">Task Success + Policy Compliance</div>
+                </div>
+            `;
+        }
+
+        // Get rank badge HTML
+        function getRankBadge(rank) {
+            let className = 'rank-default';
+            if (rank === 1) className = 'rank-1';
+            else if (rank === 2) className = 'rank-2';
+            else if (rank === 3) className = 'rank-3';
+            return `<span class="rank-badge ${className}">${rank}</span>`;
+        }
+
+        // Get type badge HTML
+        function getTypeBadge(type) {
+            const className = type === 'Private' ? 'type-private' : 'type-opensource';
+            return `<span class="type-badge ${className}">${type}</span>`;
+        }
+
+        // Get score bar HTML
+        function getScoreBar(score) {
+            const percentage = Math.min(score * 100, 100);
+            const hue = 120 * (score); // Green for high, red for low
+            return `
+                <div class="score-container">
+                    <div class="score-bar-bg">
+                        <div class="score-bar-fill" style="width: ${percentage}%; background: linear-gradient(90deg, hsl(${hue}, 70%, 50%), hsl(${hue}, 80%, 60%));"></div>
+                    </div>
+                    <span class="score-value">${(score * 100).toFixed(1)}%</span>
+                </div>
+            `;
+        }
+
+        // Update leaderboard
+        function updateLeaderboard() {
+            const modelType = document.getElementById('model-type').value;
+            const category = document.getElementById('category').value;
+            const categoryColumns = CATEGORIES[category] || ['CuP'];
+
+            // Filter by model type
+            let filtered = rawData;
+            if (modelType !== 'All') {
+                filtered = rawData.filter(row => (row['Model Type'] || '').trim() === modelType);
+            }
+
+            // Calculate category score
+            filtered = filtered.map(row => {
+                const scores = categoryColumns.map(col => parseFloat(row[col]) || 0);
+                const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+                return { ...row, categoryScore: avgScore };
+            });
+
+            // Sort by score
+            filtered.sort((a, b) => b.categoryScore - a.categoryScore);
+
+            // Add ranks
+            filtered = filtered.map((row, index) => ({ ...row, rank: index + 1 }));
+
+            // Update table
+            const tableBody = document.getElementById('table-body');
+            tableBody.innerHTML = filtered.map(row => `
+                <tr>
+                    <td>${getRankBadge(row.rank)}</td>
+                    <td><strong>${row['Model'] || 'Unknown'}</strong></td>
+                    <td>${getTypeBadge(row['Model Type'] || 'Unknown')}</td>
+                    <td>${row['Vendor'] || 'Unknown'}</td>
+                    <td>${getScoreBar(row.categoryScore)}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('leaderboard-table').style.display = 'table';
+
+            // Update chart
+            updateChart(filtered, category);
+        }
+
+        // Update chart
+        function updateChart(data, categoryName) {
+            const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            const colors = data.map(row => 
+                row['Model Type'] === 'Private' ? '#8B5CF6' : '#10B981'
+            );
+
+            const trace = {
+                type: 'bar',
+                orientation: 'h',
+                y: data.map(r => r['Model']).reverse(),
+                x: data.map(r => r.categoryScore * 100).reverse(),
+                marker: {
+                    color: colors.reverse(),
+                    cornerradius: 4
+                },
+                text: data.map(r => (r.categoryScore * 100).toFixed(1) + '%').reverse(),
+                textposition: 'outside',
+                textfont: {
+                    color: isDark ? '#ffffff' : '#1F2937',
+                    size: 12
+                },
+                hovertemplate: '<b>%{y}</b><br>Score: %{x:.1f}%<extra></extra>'
+            };
+
+            const layout = {
+                title: {
+                    text: `Model Performance - ${categoryName}`,
+                    font: {
+                        size: 20,
+                        color: isDark ? '#ffffff' : '#1F2937'
+                    }
+                },
+                xaxis: {
+                    title: 'Score (%)',
+                    range: [0, 105],
+                    gridcolor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+                    tickfont: { color: isDark ? '#e2e8f0' : '#4B5563' },
+                    titlefont: { color: isDark ? '#e2e8f0' : '#4B5563' }
+                },
+                yaxis: {
+                    tickfont: { color: isDark ? '#e2e8f0' : '#4B5563', size: 12 },
+                    automargin: true
+                },
+                paper_bgcolor: 'transparent',
+                plot_bgcolor: 'transparent',
+                margin: { l: 200, r: 80, t: 60, b: 50 },
+                height: Math.max(400, data.length * 50),
+                showlegend: false
+            };
+
+            Plotly.newPlot('performance-chart', [trace], layout, { responsive: true });
+        }
+
+        // Event listeners
+        document.getElementById('model-type').addEventListener('change', updateLeaderboard);
+        document.getElementById('category').addEventListener('change', updateLeaderboard);
+
+        // Handle theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+            updateLeaderboard();
+        });
+
+        // Initialize
+        fetchData();
+    </script>
+</body>
+</html>
