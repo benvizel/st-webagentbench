@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ST-WebAgentBench Leaderboard</title>
-    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <title>ST-WebAgentBench</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -26,8 +25,6 @@
             --purple-gradient: linear-gradient(45deg, #A78BFA, #8B5CF6);
             --pink-gradient: linear-gradient(45deg, #F472B6, #EC4899);
             --shadow-color: rgba(0, 0, 0, 0.2);
-            --private-color: #8B5CF6;
-            --opensource-color: #10B981;
         }
 
         @media (prefers-color-scheme: light) {
@@ -43,10 +40,6 @@
                 --card-bg: rgba(249, 250, 251, 0.8);
                 --accent-color: #4F46E5;
                 --accent-bg: rgba(79, 70, 229, 0.1);
-                --blue-gradient: linear-gradient(45deg, #3B82F6, #2563EB);
-                --green-gradient: linear-gradient(45deg, #34D399, #10B981);
-                --purple-gradient: linear-gradient(45deg, #8B5CF6, #7C3AED);
-                --pink-gradient: linear-gradient(45deg, #EC4899, #DB2777);
                 --shadow-color: rgba(0, 0, 0, 0.1);
             }
         }
@@ -65,157 +58,117 @@
             min-height: 100vh;
         }
 
-        .container {
+        /* Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+        }
+
+        .nav-content {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        /* Header Styles */
-        .header-wrapper {
-            background: var(--bg-primary);
-            padding: 4rem 2rem;
-            border-radius: 16px;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .header-content {
-            max-width: 72rem;
-            margin: 0 auto;
-        }
-
-        .title-section {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .title-gradient {
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            font-weight: 800;
-            line-height: 1.1;
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
             background: var(--purple-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 2rem;
+            text-decoration: none;
         }
 
-        .description {
-            color: var(--text-secondary);
-            font-size: 1.25rem;
-            line-height: 1.75;
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .highlight-question {
-            background: var(--blue-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            display: block;
-            margin-top: 1rem;
-            font-size: 1.5rem;
-            font-weight: 500;
-        }
-
-        /* Metrics Grid */
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-top: 4rem;
-        }
-
-        @media (max-width: 1024px) {
-            .metrics-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 640px) {
-            .metrics-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .metric-card {
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: 1rem;
-            padding: 2rem;
+            border-radius: 100px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
             transition: all 0.3s ease;
-            text-align: center;
+            font-family: inherit;
         }
 
-        .metric-card:hover {
-            transform: translateY(-5px);
+        .nav-link:hover {
+            transform: translateY(-2px);
             border-color: var(--border-hover);
-            box-shadow: 0 4px 20px var(--shadow-color);
+            background: var(--accent-bg);
         }
 
-        .metric-number {
-            font-size: 4rem;
+        .nav-link.active {
+            background: var(--accent-bg);
+            border-color: var(--border-hover);
+        }
+
+        .nav-link svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
             font-weight: 800;
-            margin-bottom: 1rem;
-        }
-
-        .metric-blue {
-            background: var(--blue-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .metric-green {
-            background: var(--green-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .metric-purple {
+            line-height: 1.2;
             background: var(--purple-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-        }
-
-        .metric-pink {
-            background: var(--pink-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .metric-label {
-            color: var(--text-secondary);
-            font-size: 1.5rem;
             margin-bottom: 1rem;
         }
 
-        .metric-detail {
-            font-size: 1rem;
-            line-height: 1.75;
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        .authors {
             color: var(--text-tertiary);
+            font-size: 1rem;
+            margin-bottom: 2rem;
         }
 
-        .metric-detail.primary {
-            color: var(--accent-color);
-        }
-
-        /* Actions */
-        .actions {
+        .hero-buttons {
             display: flex;
             gap: 1rem;
             justify-content: center;
-            margin-top: 3rem;
             flex-wrap: wrap;
         }
 
-        .action-button {
+        .hero-button {
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -225,632 +178,541 @@
             border-radius: 100px;
             color: var(--text-primary);
             text-decoration: none;
-            font-size: 0.95rem;
+            font-size: 1rem;
+            font-weight: 500;
             transition: all 0.3s ease;
-            font-family: inherit;
         }
 
-        .action-button:hover {
+        .hero-button:hover {
             transform: translateY(-2px);
-            border-color: var(--accent-color);
+            border-color: var(--border-hover);
             background: var(--accent-bg);
         }
 
-        .action-button svg {
+        .hero-button.primary {
+            background: var(--purple-gradient);
+            border: none;
+            color: white;
+        }
+
+        .hero-button.primary:hover {
+            opacity: 0.9;
+        }
+
+        .hero-button svg {
             width: 20px;
             height: 20px;
         }
 
-        /* Filters */
-        .filters-section {
-            display: flex;
+        /* Section */
+        .section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: var(--blue-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-content {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
             margin: 2rem 0;
-            flex-wrap: wrap;
         }
 
-        .filter-group {
-            flex: 1;
-            min-width: 200px;
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
-        .filter-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-
-        .filter-select {
-            width: 100%;
-            padding: 0.75rem 1rem;
+        .stat-card {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 1rem;
-            font-family: inherit;
-            cursor: pointer;
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
             transition: all 0.3s ease;
         }
 
-        .filter-select:hover,
-        .filter-select:focus {
+        .stat-card:hover {
+            transform: translateY(-5px);
             border-color: var(--border-hover);
-            outline: none;
         }
 
-        /* Table Styles */
-        .table-container {
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            overflow: hidden;
-            margin: 2rem 0;
-            border: 1px solid var(--border-color);
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
         }
 
-        .styled-table {
-            width: 100%;
-            border-collapse: collapse;
+        .stat-blue {
+            background: var(--blue-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .styled-table thead {
-            position: sticky;
-            top: 0;
-            background: var(--bg-hover);
-            z-index: 1;
+        .stat-green {
+            background: var(--green-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .styled-table th {
-            padding: 1rem 1.5rem;
-            text-align: left;
-            font-weight: 600;
-            color: var(--text-primary);
-            border-bottom: 1px solid var(--border-color);
+        .stat-purple {
+            background: var(--purple-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .styled-table td {
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-primary);
-        }
-
-        .styled-table tbody tr {
-            transition: background 0.2s ease;
-        }
-
-        .styled-table tbody tr:hover {
-            background: var(--bg-hover);
-        }
-
-        /* Rank Badge */
-        .rank-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-            font-weight: 700;
-            font-size: 1rem;
-        }
-
-        .rank-1 {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #000;
-        }
-
-        .rank-2 {
-            background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
-            color: #000;
-        }
-
-        .rank-3 {
-            background: linear-gradient(135deg, #CD7F32, #B87333);
-            color: #fff;
-        }
-
-        .rank-default {
-            background: var(--bg-hover);
+        .stat-label {
             color: var(--text-secondary);
-        }
-
-        /* Type Badge */
-        .type-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 100px;
-            font-size: 0.85rem;
+            font-size: 1.1rem;
             font-weight: 500;
         }
 
-        .type-private {
-            background: rgba(139, 92, 246, 0.2);
-            color: #A78BFA;
+        /* Metric Card */
+        .metric-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
         }
 
-        .type-opensource {
-            background: rgba(16, 185, 129, 0.2);
-            color: #34D399;
+        .metric-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
         }
 
-        /* Score Bar */
-        .score-container {
+        .metric-description {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        /* Risk Levels */
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .risk-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .risk-card {
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+
+        .risk-low {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .risk-medium {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .risk-high {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .risk-label {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .risk-low .risk-label { color: #34D399; }
+        .risk-medium .risk-label { color: #FBBF24; }
+        .risk-high .risk-label { color: #F87171; }
+
+        .risk-value {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Applications */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .apps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .app-card {
+            background: var(--bg-hover);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Citation */
+        .citation-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            white-space: pre;
+            color: var(--text-secondary);
+        }
+
+        /* Contact */
+        .contact-section {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+
+        .contact-email {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Divider */
+        .divider {
+            border-top: 1px solid var(--border-color);
+            margin: 2rem 0;
+        }
+
+        /* Policy Dimensions */
+        .dimensions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .dimensions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .dimension-card {
+            background: var(--bg-hover);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1rem 1.5rem;
             display: flex;
             align-items: center;
             gap: 0.75rem;
         }
 
-        .score-bar-bg {
-            flex: 1;
-            height: 8px;
-            background: var(--bg-hover);
-            border-radius: 4px;
-            overflow: hidden;
-            min-width: 100px;
-        }
-
-        .score-bar-fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.5s ease;
-        }
-
-        .score-value {
-            font-weight: 600;
-            min-width: 60px;
-            text-align: right;
-        }
-
-        /* Chart Container */
-        .chart-container {
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border: 1px solid var(--border-color);
-        }
-
-        /* Loading State */
-        .loading {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 4rem;
-            color: var(--text-secondary);
-        }
-
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border-color);
-            border-top-color: var(--accent-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-right: 1rem;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Footer/Methodology */
-        .section-divider {
-            margin: 3rem 0;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .section-title {
+        .dimension-icon {
             font-size: 1.5rem;
-            font-weight: 700;
+        }
+
+        .dimension-name {
+            font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 1rem;
-        }
-
-        .bibtex-citation {
-            font-family: 'Courier New', monospace;
-            white-space: pre;
-            padding: 1.5rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow-x: auto;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .acknowledgment-text {
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
         }
     </style>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="nav-logo">ST-WebAgentBench</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link active">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                    Home
+                </a>
+                <a href="https://huggingface.co/datasets/dolev31/st-webagentbench" class="nav-link" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Dataset
+                </a>
+                <a href="https://arxiv.org/pdf/2410.06703" class="nav-link" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                    </svg>
+                    Paper
+                </a>
+                <a href="leaderboard.html" class="nav-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 20V10"/>
+                        <path d="M12 20V4"/>
+                        <path d="M6 20v-6"/>
+                    </svg>
+                    Leaderboard
+                </a>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
-        <!-- Header -->
-        <div class="header-wrapper">
-            <div class="header-content">
-                <div class="title-section">
-                    <div class="title-gradient">ST-WebAgentBench Leaderboard</div>
-                    <div class="description">
-                        Web agents are evolving rapidly, but enterprise deployment demands more than task completion—it requires safety and trust.<br>
-                        This benchmark evaluates agents on real enterprise tasks, measuring both success and policy adherence.
-                        <span class="highlight-question">
-                            "Can web agents complete enterprise tasks without violating policies?"
-                        </span>
+        <!-- Hero -->
+        <section class="hero">
+            <h1 class="hero-title">ST-WebAgentBench</h1>
+            <p class="hero-subtitle">A Benchmark for Evaluating Safety and Trustworthiness in Web Agents</p>
+            <p class="authors">
+                Ido Levy, Ben Wiesel, Sami Marreed, Alon Oved, Avi Yaeli, Nir Mashkif, Segev Shlomov
+            </p>
+            <div class="hero-buttons">
+                <a href="https://github.com/segev-shlomov/ST-WebAgentBench" class="hero-button" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                    </svg>
+                    Code
+                </a>
+                <a href="https://huggingface.co/datasets/dolev31/st-webagentbench" class="hero-button" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Dataset
+                </a>
+                <a href="https://arxiv.org/pdf/2410.06703" class="hero-button" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                    </svg>
+                    Paper
+                </a>
+                <a href="leaderboard.html" class="hero-button primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 20V10"/>
+                        <path d="M12 20V4"/>
+                        <path d="M6 20v-6"/>
+                    </svg>
+                    Leaderboard
+                </a>
+            </div>
+        </section>
+
+        <!-- Overview -->
+        <section class="section">
+            <h2 class="section-title">Overview</h2>
+            <p class="section-content">
+                ST-WebAgentBench is a benchmarking platform for evaluating the safety and trustworthiness of autonomous web agents. It generates realistic enterprise-grade web environments that simulate high-risk business operations, where policy compliance and safety are paramount.
+                <br><br>
+                The benchmark embeds structured safety policies and critical decision-making criteria into web interactions to assess agent behavior in these scenarios. It introduces a new metric, <strong>Completion under Policies (CuP)</strong>, to rigorously measure how well agents adhere to predefined safety and trustworthiness standards.
+            </p>
+        </section>
+
+        <!-- Stats -->
+        <section class="section">
+            <h2 class="section-title">Benchmark Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number stat-blue">222</div>
+                    <div class="stat-label">Enterprise Tasks</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number stat-green">646</div>
+                    <div class="stat-label">Policy Instances</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number stat-purple">6</div>
+                    <div class="stat-label">Safety Dimensions</div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: center; align-items: center; gap: 2rem; margin-top: 2.5rem; flex-wrap: wrap;">
+                <img src="tasks_diagram.png" alt="222 Tasks policy dimensions" style="max-width: 420px; width: 45%; border-radius: 1rem;">
+                <img src="app_table.png" alt="Application task distribution" style="max-width: 700px; width: 45%; border-radius: 0.75rem;">
+            </div>
+        </section>
+
+        <!-- YouTube Examples -->
+        <section class="section">
+            <h2 class="section-title">Examples</h2>
+            <p class="section-content">See how agents perform on SuiteCRM tasks with and without safety policies:</p>
+            <div style="display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 300px;">
+                    <p style="text-align: center; color: var(--text-secondary); font-weight: 600; margin-bottom: 1rem;">An Agent on a SuiteCRM task without safety policy</p>
+                    <div style="position: relative; padding-bottom: 56.25%; height: 0; border-radius: 0.75rem; overflow: hidden; border: 1px solid var(--border-color);">
+                        <iframe src="https://www.youtube.com/embed/eE_xLROcrNA" 
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen></iframe>
                     </div>
                 </div>
-
-                <div class="actions">
-                    <a href="https://sites.google.com/view/st-webagentbench/home" class="action-button">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"/>
-                            <line x1="8" y1="12" x2="16" y2="12"/>
-                        </svg>
-                        Home
-                    </a>
-                    <a href="https://github.com/segev-shlomov/ST-WebAgentBench" class="action-button">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-                        </svg>
-                        GitHub
-                    </a>
-                    <a href="https://huggingface.co/datasets/dolev31/st-webagentbench" class="action-button">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                            <polyline points="7 10 12 15 17 10"/>
-                            <line x1="12" y1="15" x2="12" y2="3"/>
-                        </svg>
-                        Dataset
-                    </a>
-                    <a href="https://arxiv.org/pdf/2410.06703" class="action-button" target="_blank">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                            <polyline points="14 2 14 8 20 8"/>
-                            <line x1="16" y1="13" x2="8" y2="13"/>
-                            <line x1="16" y1="17" x2="8" y2="17"/>
-                        </svg>
-                        Paper
-                    </a>
-                    <a href="mailto:benwiesel@ibm.com?subject=Get%20Model%20Added%20to%20Leaderboard&body=Hi%20there%2C%0A%0AI%20would%20like%20to%20add%20my%20model%20to%20the%20Agent%20Leaderboard.%0A%0AModel%20Name%3A%0AModel%20URL%3A%0A%0ABest%20regards" class="action-button">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"/>
-                            <line x1="12" y1="8" x2="12" y2="16"/>
-                            <line x1="8" y1="12" x2="16" y2="12"/>
-                        </svg>
-                        Add Your Model
-                    </a>
+                <div style="flex: 1; min-width: 300px;">
+                    <p style="text-align: center; color: var(--text-secondary); font-weight: 600; margin-bottom: 1rem;">An Agent on a SuiteCRM task with a safety policy</p>
+                    <div style="position: relative; padding-bottom: 56.25%; height: 0; border-radius: 0.75rem; overflow: hidden; border: 1px solid var(--border-color);">
+                        <iframe src="https://www.youtube.com/embed/rH_yBgJsbPo?start=2" 
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen></iframe>
+                    </div>
                 </div>
-
-                <!-- Metrics Cards (populated by JS) -->
-                <div class="metrics-grid" id="metrics-grid"></div>
             </div>
-        </div>
+        </section>
 
-        <!-- Filters -->
-        <div class="filters-section">
-            <div class="filter-group">
-                <label class="filter-label" for="model-type">Model Type</label>
-                <select class="filter-select" id="model-type">
-                    <option value="All">All</option>
-                </select>
+        <!-- Applications -->
+        <section class="section">
+            <h2 class="section-title">Applications</h2>
+            <p class="section-content">
+                ST-WebAgentBench evaluates agents across three realistic enterprise applications:
+            </p>
+            <div class="apps-grid">
+                <div class="app-card">🦊 GitLab</div>
+                <div class="app-card">🛒 ShoppingAdmin</div>
+                <div class="app-card">📊 SuiteCRM</div>
             </div>
-            <div class="filter-group">
-                <label class="filter-label" for="category">Category</label>
-                <select class="filter-select" id="category">
-                    <option value="Overall (CuP)">Overall (CuP)</option>
-                    <option value="Overall (Avg. All Metrics)">Overall (Avg. All Metrics)</option>
-                    <option value="Completion Rate">Completion Rate</option>
-                    <option value="Partial Completion Rate">Partial Completion Rate</option>
-                    <option value="CuP">CuP</option>
-                    <option value="Partial CuP">Partial CuP</option>
-                </select>
+        </section>
+
+        <!-- Policy Dimensions -->
+        <section class="section">
+            <h2 class="section-title">Safety Dimensions</h2>
+            <p class="section-content">
+                Each task is evaluated across six policy dimensions:
+            </p>
+            <div class="dimensions-grid">
+                <div class="dimension-card">
+                    <span class="dimension-icon">🔒</span>
+                    <span class="dimension-name">Data Privacy</span>
+                </div>
+                <div class="dimension-card">
+                    <span class="dimension-icon">⚖️</span>
+                    <span class="dimension-name">Compliance</span>
+                </div>
+                <div class="dimension-card">
+                    <span class="dimension-icon">🛡️</span>
+                    <span class="dimension-name">Security</span>
+                </div>
+                <div class="dimension-card">
+                    <span class="dimension-icon">✅</span>
+                    <span class="dimension-name">Authorization</span>
+                </div>
+                <div class="dimension-card">
+                    <span class="dimension-icon">📋</span>
+                    <span class="dimension-name">Operational</span>
+                </div>
+                <div class="dimension-card">
+                    <span class="dimension-icon">🎯</span>
+                    <span class="dimension-name">Accuracy</span>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Table -->
-        <div class="table-container">
-            <div id="loading" class="loading">
-                <div class="loading-spinner"></div>
-                Loading leaderboard data...
+        <!-- CuP Metric -->
+        <section class="section">
+            <div class="metric-section" style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 280px;">
+                    <h3 class="metric-title">📐 Completion Under Policy (CuP) Metric</h3>
+                    <p class="metric-description">
+                        The Completion Under the Policy (CuP) metric assesses an agent's ability to complete tasks in ST-WebAgentBench without violating organizational or user policies across the different categories, with the final score being zero if any policy violations occur.
+                    </p>
+                </div>
+                <div style="flex: 1; min-width: 280px; text-align: center;">
+                    <img src="cup_formula.png" alt="CuP metric formula" style="max-width: 100%; border-radius: 0.5rem;">
+                </div>
             </div>
-            <table class="styled-table" id="leaderboard-table" style="display: none;">
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Model</th>
-                        <th>Type</th>
-                        <th>Vendor</th>
-                        <th>Score</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body"></tbody>
-            </table>
-        </div>
+        </section>
 
-        <!-- Chart -->
-        <div class="chart-container">
-            <div id="performance-chart"></div>
-        </div>
+        <!-- Risk Ratio -->
+        <section class="section">
+            <div class="metric-section">
+                <h3 class="metric-title">⚠️ Risk Ratio Classification</h3>
+                <p class="metric-description">
+                    The risk ratio indicates how frequently an agent violates policies in each category across all tasks:
+                </p>
+                <div class="risk-grid">
+                    <div class="risk-card risk-low">
+                        <div class="risk-label">Low Risk</div>
+                        <div class="risk-value">≤ 5% violations</div>
+                    </div>
+                    <div class="risk-card risk-medium">
+                        <div class="risk-label">Medium Risk</div>
+                        <div class="risk-value">5% – 15% violations</div>
+                    </div>
+                    <div class="risk-card risk-high">
+                        <div class="risk-label">High Risk</div>
+                        <div class="risk-value">&gt; 15% violations</div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <!-- Methodology/Footer -->
-        <div class="section-divider"></div>
-        <h2 class="section-title">Citation</h2>
-        <pre class="bibtex-citation">@misc{st-webagentbench-leaderboard,
-    author = {Ben Wiesel},
-    title = {ST-WebAgentBench},
-    year = {2025},
-    howpublished = {\url{https://huggingface.co/spaces/benwiesel/ST-WebAgentBench}}
+        <div class="divider"></div>
+
+        <!-- Evaluation Function -->
+        <section class="section">
+            <h2 class="section-title">Evaluation Function</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+                <div>
+                    <h4 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.1rem;">Example of Policies in Task # 11</h4>
+                    <img src="policies_example.png" alt="Example of Policies in Task #11" style="width: 100%; border: 1px solid var(--border-color); border-radius: 0.75rem;">
+                </div>
+                <div>
+                    <h4 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.1rem;">Example of Evaluation Operators in Task #11</h4>
+                    <img src="eval_operators_example.png" alt="Example of Evaluation Operators in Task #11" style="width: 100%; border: 1px solid var(--border-color); border-radius: 0.75rem;">
+                </div>
+            </div>
+        </section>
+
+        <!-- Citation -->
+        <section class="section">
+            <h2 class="section-title">Citation</h2>
+            <pre class="citation-box">@article{levy2024st,
+  title={St-webagentbench: A benchmark for evaluating safety and trustworthiness in web agents},
+  author={Levy, Ido and Wiesel, Ben and Marreed, Sami and Oved, Alon and Yaeli, Avi and Shlomov, Segev},
+  journal={arXiv preprint arXiv:2410.06703},
+  year={2024}
 }</pre>
+        </section>
 
-        <div class="section-divider"></div>
-        <h2 class="section-title">Acknowledgments</h2>
-        <p class="acknowledgment-text">Leaderboard template adapted from Galileo AI's Agent Leaderboard.</p>
-        <pre class="bibtex-citation">@misc{agent-leaderboard,
-    author = {Pratik Bhavsar},
-    title = {Agent Leaderboard},
-    year = {2025},
-    publisher = {Galileo.ai},
-    howpublished = {\url{https://huggingface.co/spaces/galileo-ai/agent-leaderboard}}
-}</pre>
+        <!-- Contact -->
+        <section class="contact-section">
+            <h2 class="section-title">Questions?</h2>
+            <p class="section-content">
+                Contact: <a href="mailto:segev.shlomov1@ibm.com" class="contact-email">segev.shlomov1@ibm.com</a>
+            </p>
+        </section>
     </div>
-
-    <script>
-        // Configuration
-        const SHEET_ID = "18rg0S2J01iIBXx50X8qNRLBiOS_K7MTmcbVVio25_Fc";
-        const GID = "0";
-        const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
-
-        const CATEGORIES = {
-            "Overall (CuP)": ["CuP"],
-            "Overall (Avg. All Metrics)": ["Completion Rate", "CuP", "Partial Completion Rate", "Partial CuP"],
-            "Completion Rate": ["Completion Rate"],
-            "Partial Completion Rate": ["Partial Completion Rate"],
-            "CuP": ["CuP"],
-            "Partial CuP": ["Partial CuP"],
-        };
-
-        let rawData = [];
-        let headers = [];
-
-        // Parse CSV
-        function parseCSV(csv) {
-            const lines = csv.split('\n');
-            const result = [];
-            headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
-            
-            for (let i = 1; i < lines.length; i++) {
-                if (!lines[i].trim()) continue;
-                
-                const values = [];
-                let current = '';
-                let inQuotes = false;
-                
-                for (let char of lines[i]) {
-                    if (char === '"') {
-                        inQuotes = !inQuotes;
-                    } else if (char === ',' && !inQuotes) {
-                        values.push(current.trim());
-                        current = '';
-                    } else {
-                        current += char;
-                    }
-                }
-                values.push(current.trim());
-                
-                const row = {};
-                headers.forEach((header, index) => {
-                    let value = values[index] || '';
-                    value = value.replace(/^"|"$/g, '');
-                    // Try to parse as number
-                    const num = parseFloat(value);
-                    row[header] = isNaN(num) ? value : num;
-                });
-                result.push(row);
-            }
-            return result;
-        }
-
-        // Fetch data
-        async function fetchData() {
-            try {
-                const response = await fetch(CSV_URL);
-                const csv = await response.text();
-                rawData = parseCSV(csv);
-                
-                // Populate model type filter
-                const modelTypes = [...new Set(rawData.map(r => r['Model Type']))].filter(Boolean);
-                const modelTypeSelect = document.getElementById('model-type');
-                modelTypes.forEach(type => {
-                    const option = document.createElement('option');
-                    option.value = type;
-                    option.textContent = type;
-                    modelTypeSelect.appendChild(option);
-                });
-
-                updateMetricsCards();
-                updateLeaderboard();
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                document.getElementById('loading').textContent = 'Error loading data. Please refresh.';
-            }
-        }
-
-        // Update metrics cards
-        function updateMetricsCards() {
-            const totalModels = rawData.length;
-            const typeCounts = {};
-            rawData.forEach(row => {
-                const type = row['Model Type'] || 'Unknown';
-                typeCounts[type] = (typeCounts[type] || 0) + 1;
-            });
-            const privateCount = typeCounts['Private'] || 0;
-            const openSourceCount = typeCounts['Open source'] || 0;
-            const totalVendors = new Set(rawData.map(r => r['Vendor'])).size;
-
-            document.getElementById('metrics-grid').innerHTML = `
-                <div class="metric-card">
-                    <div class="metric-number metric-blue">${totalModels}</div>
-                    <div class="metric-label">Total Models</div>
-                    <div class="metric-detail primary">${privateCount} Private</div>
-                    <div class="metric-detail primary">${openSourceCount} Open Source</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-number metric-purple">3</div>
-                    <div class="metric-label">Domains</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-number metric-green">6</div>
-                    <div class="metric-label">Safety Dimensions</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-number metric-pink">CuP</div>
-                    <div class="metric-label">Primary Metric</div>
-                    <div class="metric-detail primary">Completion under Policy</div>
-                    <div class="metric-detail primary">Task Success + Policy Compliance</div>
-                </div>
-            `;
-        }
-
-        // Get rank badge HTML
-        function getRankBadge(rank) {
-            let className = 'rank-default';
-            if (rank === 1) className = 'rank-1';
-            else if (rank === 2) className = 'rank-2';
-            else if (rank === 3) className = 'rank-3';
-            return `<span class="rank-badge ${className}">${rank}</span>`;
-        }
-
-        // Get type badge HTML
-        function getTypeBadge(type) {
-            const className = type === 'Private' ? 'type-private' : 'type-opensource';
-            return `<span class="type-badge ${className}">${type}</span>`;
-        }
-
-        // Get score bar HTML
-        function getScoreBar(score) {
-            const percentage = Math.min(score, 100);
-            const hue = 120 * (score); // Green for high, red for low
-            return `
-                <div class="score-container">
-                    <div class="score-bar-bg">
-                        <div class="score-bar-fill" style="width: ${percentage}%; background: linear-gradient(90deg, hsl(${hue}, 70%, 50%), hsl(${hue}, 80%, 60%));"></div>
-                    </div>
-                    <span class="score-value">${score.toFixed(1)}%</span>
-                </div>
-            `;
-        }
-
-        // Update leaderboard
-        function updateLeaderboard() {
-            const modelType = document.getElementById('model-type').value;
-            const category = document.getElementById('category').value;
-            const categoryColumns = CATEGORIES[category] || ['CuP'];
-
-            // Filter by model type
-            let filtered = rawData;
-            if (modelType !== 'All') {
-                filtered = rawData.filter(row => (row['Model Type'] || '').trim() === modelType);
-            }
-
-            // Calculate category score
-            filtered = filtered.map(row => {
-                const scores = categoryColumns.map(col => parseFloat(row[col]) || 0);
-                const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
-                return { ...row, categoryScore: avgScore };
-            });
-
-            // Sort by score
-            filtered.sort((a, b) => b.categoryScore - a.categoryScore);
-
-            // Add ranks
-            filtered = filtered.map((row, index) => ({ ...row, rank: index + 1 }));
-
-            // Update table
-            const tableBody = document.getElementById('table-body');
-            tableBody.innerHTML = filtered.map(row => `
-                <tr>
-                    <td>${getRankBadge(row.rank)}</td>
-                    <td><strong>${row['Model'] || 'Unknown'}</strong></td>
-                    <td>${getTypeBadge(row['Model Type'] || 'Unknown')}</td>
-                    <td>${row['Vendor'] || 'Unknown'}</td>
-                    <td>${getScoreBar(row.categoryScore)}</td>
-                </tr>
-            `).join('');
-
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('leaderboard-table').style.display = 'table';
-
-            // Update chart
-            updateChart(filtered, category);
-        }
-
-        // Update chart
-        function updateChart(data, categoryName) {
-            const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            
-            const colors = data.map(row => 
-                row['Model Type'] === 'Private' ? '#8B5CF6' : '#10B981'
-            );
-
-            const trace = {
-                type: 'bar',
-                orientation: 'h',
-                y: data.map(r => r['Model']).reverse(),
-                x: data.map(r => r.categoryScore).reverse(),
-                marker: {
-                    color: colors.reverse(),
-                    cornerradius: 4
-                },
-                text: data.map(r => r.categoryScore.toFixed(1) + '%').reverse(),
-                textposition: 'outside',
-                textfont: {
-                    color: isDark ? '#ffffff' : '#1F2937',
-                    size: 12
-                },
-                hovertemplate: '<b>%{y}</b><br>Score: %{x:.1f}%<extra></extra>'
-            };
-
-            const layout = {
-                title: {
-                    text: `Model Performance - ${categoryName}`,
-                    font: {
-                        size: 20,
-                        color: isDark ? '#ffffff' : '#1F2937'
-                    }
-                },
-                xaxis: {
-                    title: 'Score (%)',
-                    range: [0, 105],
-                    gridcolor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-                    tickfont: { color: isDark ? '#e2e8f0' : '#4B5563' },
-                    titlefont: { color: isDark ? '#e2e8f0' : '#4B5563' }
-                },
-                yaxis: {
-                    tickfont: { color: isDark ? '#e2e8f0' : '#4B5563', size: 12 },
-                    automargin: true
-                },
-                paper_bgcolor: 'transparent',
-                plot_bgcolor: 'transparent',
-                margin: { l: 200, r: 80, t: 60, b: 50 },
-                height: Math.max(400, data.length * 50),
-                showlegend: false
-            };
-
-            Plotly.newPlot('performance-chart', [trace], layout, { responsive: true });
-        }
-
-        // Event listeners
-        document.getElementById('model-type').addEventListener('change', updateLeaderboard);
-        document.getElementById('category').addEventListener('change', updateLeaderboard);
-
-        // Handle theme changes
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-            updateLeaderboard();
-        });
-
-        // Initialize
-        fetchData();
-    </script>
 </body>
 </html>
