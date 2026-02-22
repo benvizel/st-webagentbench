@@ -446,6 +446,58 @@
             font-weight: 600;
             color: var(--text-primary);
         }
+
+        /* Benchmark Comparison Table */
+        .benchmark-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .benchmark-table th,
+        .benchmark-table td {
+            padding: 0.75rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .benchmark-table th {
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: var(--bg-secondary);
+        }
+        
+        .benchmark-table td:first-child,
+        .benchmark-table th:first-child {
+            text-align: left;
+        }
+        
+        .benchmark-table tbody tr {
+            transition: background 0.2s ease;
+        }
+        
+        .benchmark-table tbody tr:hover {
+            background: var(--bg-hover);
+        }
+        
+        .benchmark-table .highlight-row {
+            background: var(--accent-bg);
+            border-top: 2px solid rgba(139, 92, 246, 0.4);
+            border-bottom: 2px solid rgba(139, 92, 246, 0.4);
+        }
+        
+        .benchmark-table .highlight-row:hover {
+            background: rgba(79, 70, 229, 0.15);
+        }
+        
+        .check { color: #34D399; }
+        .cross { color: #F87171; }
+
+        
     </style>
 </head>
 <body>
@@ -539,6 +591,68 @@
                 <br><br>
                 The benchmark embeds structured safety policies and critical decision-making criteria into web interactions to assess agent behavior in these scenarios. It introduces a new metric, <strong>Completion under Policies (CuP)</strong>, to rigorously measure how well agents adhere to predefined safety and trustworthiness standards.
             </p>
+        </section>
+
+        <!-- Related Benchmarks -->
+        <section class="section">
+            <h2 class="section-title">Related Benchmarks</h2>
+            <p class="section-content">Comparison between existing web agents benchmarks. CR = Completion Rate.</p>
+            <table class="benchmark-table">
+                <thead>
+                    <tr>
+                        <th>Benchmark</th>
+                        <th>Online</th>
+                        <th>Cross App</th>
+                        <th>Realistic Enterprise</th>
+                        <th>Policy Adherence</th>
+                        <th>Human-in-the-loop</th>
+                        <th>Tasks</th>
+                        <th>Metrics</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>MiniWoB++</td>
+                        <td class="check">✔</td><td class="cross">✘</td><td class="cross">✘</td><td class="cross">✘</td><td class="cross">✘</td>
+                        <td>104</td><td>CR</td>
+                    </tr>
+                    <tr>
+                        <td>Mind2Web</td>
+                        <td class="cross">✘</td><td class="check">✔</td><td class="cross">✘</td><td class="cross">✘</td><td class="cross">✘</td>
+                        <td>2,350</td><td>CR</td>
+                    </tr>
+                    <tr>
+                        <td>WebVoyager</td>
+                        <td class="cross">✘</td><td class="check">✔</td><td class="check">✔</td><td class="cross">✘</td><td class="cross">✘</td>
+                        <td>643</td><td>CR</td>
+                    </tr>
+                    <tr>
+                        <td>WebArena</td>
+                        <td class="check">✔</td><td class="check">✔</td><td class="check">✔</td><td class="cross">✘</td><td class="cross">✘</td>
+                        <td>812</td><td>CR</td>
+                    </tr>
+                    <tr>
+                        <td>VisualWebArena</td>
+                        <td class="check">✔</td><td class="check">✔</td><td class="check">✔</td><td class="cross">✘</td><td class="cross">✘</td>
+                        <td>910</td><td>CR</td>
+                    </tr>
+                    <tr>
+                        <td>WorkArena</td>
+                        <td class="check">✔</td><td class="check">✔</td><td class="check">✔</td><td class="cross">✘</td><td class="cross">✘</td>
+                        <td>29</td><td>CR</td>
+                    </tr>
+                    <tr>
+                        <td>WebCanvas</td>
+                        <td class="check">✔</td><td class="check">✔</td><td class="check">✔</td><td class="cross">✘</td><td class="cross">✘</td>
+                        <td>542</td><td>CR, key-nodes</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td><strong>ST-WebAgentBench (ours)</strong></td>
+                        <td class="check">✔</td><td class="check">✔</td><td class="check">✔</td><td class="check">✔</td><td class="check">✔</td>
+                        <td><strong>222</strong></td><td><strong>CR, CuP, Risk</strong></td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
 
         <!-- Stats -->
